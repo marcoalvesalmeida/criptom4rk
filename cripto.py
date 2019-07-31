@@ -4,7 +4,7 @@ from keys import keys_programa
 
 
 def criptografa(arq, key):
-
+	
 	key =bytes(key, "utf-8")
 	arquivo = open(arq, "rb")
 	cifra = Fernet(key)
@@ -105,18 +105,27 @@ if sistema == "Linux":
 		
 		temp += pasta_sistema[c] + "/"
 
+	temp += ".local/share/"
 	pasta_sistema = os.listdir(temp)
 
 elif sistema == "Windows":
-
+	
 	pasta_sistema = os.path.abspath("").split("\\")
 	temp += pasta_sistema[0] +  "\\\\"
 
 	for c in range(1, 3):
-
+		
 		temp += pasta_sistema[c] + "\\"
 
 	pasta_sistema = os.listdir(temp)
+	
+	if ".m4rk" not in pasta_sistema:
+		
+		os.mkdir(temp + ".m4rk/")
+	
+	temp += ".m4rk\\"
+	pasta_sistema = os.listdir(temp)
+
 
 if "criptom4rk" not in pasta_sistema:
 	
@@ -125,7 +134,7 @@ if "criptom4rk" not in pasta_sistema:
 temp = temp + "criptom4rk/"
 
 if "dados.db" not in os.listdir(temp):
-	
+        
 	db = sqlite3.connect(temp + "dados.db")
 	cursor = db.cursor()
 	cursor.execute("""
@@ -189,10 +198,19 @@ while True:
 		
 		user = str(input("digite o nome de usuario: "))
 		senha = bytes(getpass.getpass("digite uma senha: "), "utf-8")
-		senha = cifra_principal.encrypt(senha)
-		key = Fernet.generate_key()
-		dados = (user, senha.decode("utf-8"), key.decode("utf-8"))
-		criar_usuario(dados)
+		senha2 = bytes(getpass.getpass("confirme a senha: "), "utf-8")
+
+		if senha == senha2:
+
+			senha = cifra_principal.encrypt(senha)
+			key = Fernet.generate_key()
+			dados = (user, senha.decode("utf-8"), key.decode("utf-8"))
+			criar_usuario(dados)
+			senha2 = ""
+
+		else:
+
+			print("senha não são iguais")
 
 	elif escolha == 2:
 

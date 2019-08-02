@@ -122,3 +122,7 @@ def ver_usuarios(cifra_principal, diretorio_bd):
 
 		return usuarios
 
+def continuar():
+
+	input("pressione enter para continuar!")
+

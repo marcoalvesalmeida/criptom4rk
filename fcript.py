@@ -2,7 +2,6 @@ import sqlite3, os
 from cryptography.fernet import Fernet
 
 def criptografa(arq, key, diretorio_bd, cifra_principal):
-	print(key)	
 	key = bytes(key, "utf-8")
 	arquivo = open(arq, "rb")
 	cifra = Fernet(key)
